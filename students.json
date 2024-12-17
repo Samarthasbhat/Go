@@ -1,0 +1,16 @@
+[
+  {
+    "ID": 129,
+    "Name": "john",
+    "Courses": [
+      "Mathematics",
+      "Physics",
+      "Computer Science"
+    ],
+    "Grades": {
+      "Computer Science": "32",
+      "Mathematics": "233",
+      "Physics": "234"
+    }
+  }
+]

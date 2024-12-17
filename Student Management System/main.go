@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"encoding/json"
 )
 
 
@@ -26,7 +28,8 @@ func main(){
 		fmt.Println("1. Add Student")
 		fmt.Println("2. View Students")
 		fmt.Println("3. Add Grades")
-		fmt.Println("4. Exit")
+		fmt.Println("4. Export File")
+		fmt.Println("5. Exit")
 
 		var choice int
 		fmt.Print("Enter your choice: ")
@@ -40,7 +43,9 @@ func main(){
 		case 3:
 			addGrades(&students)
 		case 4:
-			fmt.Println("Exiting.....")
+			exportMenu(students)
+		case 5:
+			fmt.Println("Exciting...")
 			return
 		default:
 			fmt.Println("Invalid choice! Please try again..")
@@ -135,4 +140,44 @@ func addGrades(students *[]Student){
 	}
 
 	fmt.Println("Grades added successfully!!")
+}
+
+//JSON
+func exportToJSON(students []Student, filename string) error{
+	// Create or overwrite the JSON file
+	file, err := os.Create(filename)
+	if err != nil{
+		return err
+	}
+	defer file.Close()
+	
+	// Encode students slice to JSON and write to the file
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ") // Pretty-Print JSON
+
+	if err := encoder.Encode(students); err != nil{
+		return err
+	}
+
+	fmt.Println("Students exported to", filename)
+	return nil
+}
+
+// Export menu function
+
+func exportMenu(students []Student) {
+	fmt.Println("\nExport Options:")
+	fmt.Println("1. Export to JSON")
+	fmt.Println("2. Export to CSV")
+	fmt.Println("3. Export to Plain Text")
+
+	var exportChoice int
+	fmt.Print("Enter your choice:")
+	fmt.Scan(&exportChoice)
+
+	switch exportChoice{
+	case 1:
+		exportToJSON(students, "students.json")
+	}
 }
