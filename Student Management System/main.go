@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"encoding/json"
+	"encoding/csv"
+	
 )
 
 
@@ -164,6 +166,52 @@ func exportToJSON(students []Student, filename string) error{
 	return nil
 }
 
+// Export for CSV file
+func exportToCSV(students []Student, filename string)error{
+	//Create or overwrite the CSV file
+	file, err := os.Create(filename)
+	if err != nil{
+		return err
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+
+	//Write the header row
+	header := []string{"ID", "Name", "Courses", "Grades"}
+	if err := writer.Write(header); err != nil{
+		return err
+	}
+	// Write student data
+	for _, student := range students{
+		// Join courses and grades as strings
+		courses := ""
+		for _, course := range student.Courses{
+			courses += course + " "
+		}
+
+		grades := ""
+
+		for course, grade := range student.Grades{
+			grades += course + ":" + grade + " "
+		}
+		row := []string{
+			fmt.Sprint(student.ID),
+			student.Name,
+			courses,
+			grades,
+		}
+
+		if err:= writer.Write(row); err != nil{
+			return err
+		}
+	}
+	fmt.Println("Students exported to", filename)
+	return nil
+}
+
 // Export menu function
 
 func exportMenu(students []Student) {
@@ -179,5 +227,9 @@ func exportMenu(students []Student) {
 	switch exportChoice{
 	case 1:
 		exportToJSON(students, "students.json")
+	case 2:
+		exportToCSV(students, "students.csv")
+	default:
+		fmt.Println("Invalid choice!")
 	}
 }
