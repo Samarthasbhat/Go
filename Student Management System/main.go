@@ -212,6 +212,39 @@ func exportToCSV(students []Student, filename string)error{
 	return nil
 }
 
+// Export students to a plain text file
+func exportToText(students []Student, filename string) error {
+	// Create or overwrite the text file
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	//Write student data
+	for _, student := range students{
+		_, err:= file.WriteString(fmt.Sprintf("ID: %d, Name: %s\n", student.ID, student.Name))
+		if err != nil{
+			return err
+		}
+
+		_, err = file.WriteString("Courses: ")
+		for _, course := range student.Courses{
+			_, err = file.WriteString(course + " ")
+		}
+		file.WriteString("\nGrades:\n")
+		for course, grade := range student.Grades{
+			_, err = file.WriteString(fmt.Sprintf("%s: %s\n", course, grade))
+		}
+		file.WriteString("\n")
+	}
+	fmt.Println("Students exported to", filename)
+	return nil
+}
+
+
+
 // Export menu function
 
 func exportMenu(students []Student) {
@@ -229,6 +262,8 @@ func exportMenu(students []Student) {
 		exportToJSON(students, "students.json")
 	case 2:
 		exportToCSV(students, "students.csv")
+	case 3:
+		exportToText(students,"students.txt")
 	default:
 		fmt.Println("Invalid choice!")
 	}
