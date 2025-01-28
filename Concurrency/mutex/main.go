@@ -31,12 +31,13 @@ func main(){
 	counter := Counter{}
 	var wg sync.WaitGroup
 
-	for i:=0; i<10; i++{
+	for i:=0; i<5; i++{
 		wg.Add(1)
-		go func(){
+		go func(i int){
 			defer wg.Done()
+			fmt.Println(i)
 			counter.Increment()
-		}()
+		}(i)
 	}
 	wg.Wait()
 	fmt.Println("Final counter value:", counter.GetValue())
