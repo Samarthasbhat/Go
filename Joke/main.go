@@ -3,49 +3,56 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
+	"io/ioutil"
+	"log"
+	"math/rand"
+	"os"
+	"time"
 )
 
-// Joke structure based on JokeAPI's response
+// Joke structure
 type Joke struct {
-	Category string `json:"category"`
-	Type     string `json:"type"`
-	Setup    string `json:"setup"`     // For two-part jokes
-	Delivery string `json:"delivery"` // For two-part jokes
-	Joke     string `json:"joke"`     // For single-line jokes
-	Error    bool   `json:"error"`    // Indicates if there was an issue
+	Type      string `json:"type"`
+	Setup     string `json:"setup"`
+	Punchline string `json:"punchline"`
 }
 
 func main() {
-	url := "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,racist,sexist,explicit"
-
-	// Make an HTTP GET request
-	resp, err := http.Get(url)
+	file, err := os.Open("joke/joke.json")
 	if err != nil {
-		fmt.Println("Error fetching joke:", err)
-		return
+		log.Fatalf("Failed to open file: %v", err)
 	}
-	defer resp.Body.Close()
+	defer file.Close()
 
-	// Decode the JSON response
-	var joke Joke
-	if err := json.NewDecoder(resp.Body).Decode(&joke); err != nil {
-		fmt.Println("Error decoding response:", err)
-		return
+	// Read file content
+	body, err := ioutil.ReadAll(file)
+	if err != nil {
+		log.Fatalf("Failed to read file: %v", err)
 	}
 
-	// Handle errors from the API
-	if joke.Error {
-		fmt.Println("API returned an error while fetching the joke.")
-		return
+	// Create a slice of jokes
+	var jokes []Joke
+
+	// Parse the JSON array into the slice
+	err = json.Unmarshal(body, &jokes)
+	if err != nil {
+		log.Fatalf("Failed to unmarshal JSON: %v", err)
 	}
 
-	// Print the joke based on its type
-	if joke.Type == "single" {
-		fmt.Printf("Here's a joke:\n%s\n", joke.Joke)
-	} else if joke.Type == "twopart" {
-		fmt.Printf("Here's a joke:\n%s\n%s\n", joke.Setup, joke.Delivery)
-	} else {
-		fmt.Println("Unexpected joke type!")
+	// Check if there are any jokes
+	if len(jokes) == 0 {
+		log.Fatal("No jokes found in JSON file")
 	}
+
+	// Seed random number generator
+	rand.Seed(time.Now().UnixNano())
+
+	// Select a random joke
+	randomIndex := rand.Intn(len(jokes))
+	joke := jokes[randomIndex]
+
+	// Print the selected joke
+	fmt.Println("Type:", joke.Type)
+	fmt.Println("Setup:", joke.Setup)
+	fmt.Println("Punchline:", joke.Punchline)
 }
