@@ -7,6 +7,7 @@ import (
 	"log"
 	"math/rand"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -50,6 +51,8 @@ func main() {
 	// Select a random joke
 	randomIndex := rand.Intn(len(jokes))
 	joke := jokes[randomIndex]
+
+	fmt.Println("Joke: ", strings.TrimSpace(joke.Setup+" "+strings.TrimSpace(joke.Punchline)))
 
 	// Print the selected joke
 	fmt.Println("Type:", joke.Type)
