@@ -1,8 +1,15 @@
 package hello
 
-import "fmt"
+import (
+		// "fmt"
+		"strings"
+)
 
 // Say returns a greeting message
-func Say(name string) string {
-	return fmt.Sprintf("Hello, %s!", name)
+func Say(names []string) string {
+	if len(names) == 0{
+		names = []string{"world"}
+	}
+
+	return "Hello, " + strings.Join(names, ", ") + "!" 
 }
