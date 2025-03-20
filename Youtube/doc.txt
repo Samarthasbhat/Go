@@ -1,0 +1,7 @@
+- boolean are not convertible to/from integers
+- error  may be nil or non-nil
+- pointer may be nil or non-nil
+- no pointer manipulation except through package "unsafe"
+- Pointer are physically addresses, logically opaque
+- Constants are immutable "const"
+
