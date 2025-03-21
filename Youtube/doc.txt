@@ -8,4 +8,12 @@
 - rune: a synonym for int32 for characters
 - string : an immutable sequence of "characters"
 - we cannot change a part of string s[5] = 'a'
-- strings inbuilt func : strings.Contains(), strings.HasPrefix(), strings.Index(), 
+- strings inbuilt func : strings.Contains(), strings.HasPrefix(), strings.Index()
+- map[string]int : map[Key type] value type
+- Array are typed by size, which is fixed at compile time
+- Arrays are passed by value, so we can copy(e := a) value And slice is vice versa(updating OK)
+- Slice are indexed like [8:11]
+- Variable length it is used in the most cases
+- Slice are Not comparable and not used by map
+- Maps are Dictionaries, p:= make(map[string]int) // non-nil but empty
+
