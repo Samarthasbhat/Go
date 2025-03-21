@@ -4,4 +4,8 @@
 - no pointer manipulation except through package "unsafe"
 - Pointer are physically addresses, logically opaque
 - Constants are immutable "const"
-
+- byte: synonym for uint8
+- rune: a synonym for int32 for characters
+- string : an immutable sequence of "characters"
+- we cannot change a part of string s[5] = 'a'
+- strings inbuilt func : strings.Contains(), strings.HasPrefix(), strings.Index(), 
