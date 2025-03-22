@@ -16,4 +16,5 @@
 - Variable length it is used in the most cases
 - Slice are Not comparable and not used by map
 - Maps are Dictionaries, p:= make(map[string]int) // non-nil but empty
+- Nil is a type of zero: it indicates the absence of something
 
