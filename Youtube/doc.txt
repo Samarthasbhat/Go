@@ -12,9 +12,13 @@
 - map[string]int : map[Key type] value type
 - Array are typed by size, which is fixed at compile time
 - Arrays are passed by value, so we can copy(e := a) value And slice is vice versa(updating OK)
-- Slice are indexed like [8:11]
+- Slice are indexed like, [8:11]
 - Variable length it is used in the most cases
 - Slice are Not comparable and not used by map
 - Maps are Dictionaries, p:= make(map[string]int) // non-nil but empty
 - Nil is a type of zero: it indicates the absence of something
-
+- Every name that's capitalized is exported
+- A package "A" cannot import a package that imports A (package B import "A" //WRONG)
+- Items within a package get initialized before main
+- short declaration(:=) operations it least one "new variable"
+- 

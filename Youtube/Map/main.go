@@ -36,3 +36,4 @@ func main() {
 		fmt.Println(s.key, "appears", s.val, "times")
 	}
 }
+
