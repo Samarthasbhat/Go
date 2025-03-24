@@ -1,16 +1,23 @@
 package main
 
-import "fmt"
-
-func reverseString(s string) string {
-	runes := []rune(s)
-	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
-		runes[i], runes[j] = runes[j], runes[i]
-	}
-	return string(runes)
-}
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	fmt.Println(reverseString("Macha"))
+	ch := make(chan string)
 
+	go func() {
+		fmt.Println("Sending....")
+		ch <- "Hello"
+
+		fmt.Println("Sent!") // There is no sync for this, added  sleep at end of main func
+	}()
+
+	time.Sleep(3 * time.Second)
+	fmt.Println("Receiving...")
+	msg := <-ch
+	fmt.Println("Received:", msg)
+	time.Sleep(5 * time.Second)
 }

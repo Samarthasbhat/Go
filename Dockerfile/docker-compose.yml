@@ -1,0 +1,10 @@
+
+
+services:
+  app:
+    image: my-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/app
+    command: npm start
