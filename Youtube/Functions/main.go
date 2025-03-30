@@ -8,7 +8,12 @@
 	// There is no "Pass by reference in GO"
 	// By value parameters : num, bool, arr, struct
 	// By reference parameters: pointer(&x), strings, slices, maps, channels
-package main 
+	// A function may call itself: the trick is knowing when to stop (RECURSION)
+	// Recursion is solwer but it usefull in the Graphs, Tree structures 
+
+	//The  defer statement caputres a fucntion call to run later 
+
+	package main 
 
 import (
 	"fmt"
