@@ -1,5 +1,5 @@
 //  pool usually refers to a resource pool — a way to reuse expensive-to-create objects like database connections, goroutines, buffers, etc., to improve performance and reduce memory pressure.
-
+// Pool is useful for warming a cache of pre-allocated objects for operations that must run as quickly as possible.
 package main
 
 import (

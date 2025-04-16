@@ -21,4 +21,4 @@
 - A package "A" cannot import a package that imports A (package B import "A" //WRONG)
 - Items within a package get initialized before main
 - short declaration(:=) operations it least one "new variable"
-- 
+- Recursion is easy to understand for the Trees, Graph Data structures
