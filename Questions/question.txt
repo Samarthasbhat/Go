@@ -1,0 +1,77 @@
+## 🧠 Tricky Go Interview Questions (Based on Channels, Goroutines, sync.Pool, Benchmarking)
+
+### 1. Channels & Goroutines
+**Q:** What will happen if a goroutine tries to send data into an unbuffered channel, but there is no receiver ready?
+> Bonus: How can this lead to a deadlock?
+
+---
+
+### 2. Directional Channels
+**Q:** What's the difference between `chan string`, `<-chan string`, and `chan<- string`?  
+Can you pass a `chan string` to a function that accepts `chan<- string`?
+> Follow-up: Why is this useful when designing APIs?
+
+---
+
+### 3. Closed Channels
+**Q:** What happens when you read from a closed channel? What values do you get?
+```go
+ch := make(chan string)
+close(ch)
+msg, ok := <-ch
+fmt.Println(msg, ok)
+```
+> What is printed and why?
+
+---
+
+### 4. `sync.Pool`
+**Q:** What is `sync.Pool` in Go?  
+How does it differ from using a `chan` to reuse objects?
+> Bonus: What happens to the pool contents when a garbage collection runs?
+
+---
+
+### 5. Benchmarking
+**Q:** Why do benchmark functions in Go have the signature `func (b *testing.B)` and not just `func()`?
+> And why can't you just call a benchmark function from `main()`?
+
+---
+
+### 6. Goroutines with Select
+**Q:** How would you implement a timeout using `select` and `time.After()` when receiving from a channel?
+> Can you write a short example?
+
+---
+
+### 7. Data Races
+**Q:** Consider this code:
+```go
+var count int
+go func() {
+    count++
+}()
+fmt.Println(count)
+```
+What potential problem can arise here, and how would you fix it?
+> Follow-up: Would using a channel or `sync.Mutex` help?
+
+---
+
+### 8. Channel Closing Logic
+**Q:** Who should close a channel: the sender or the receiver? Why?
+> Bonus: What happens if you close a channel and then try to send again?
+
+---
+
+### 9. Goroutine Leak
+**Q:** What is a goroutine leak? Can you give an example of a goroutine that leaks because it’s waiting on a blocked channel?
+
+---
+
+### 10. Channel vs. Mutex
+**Q:** When would you use a channel for synchronization over a `sync.Mutex`, and vice versa?
+> Think of this as "share memory by communicating" vs. "communicate by sharing memory"
+
+---
+
