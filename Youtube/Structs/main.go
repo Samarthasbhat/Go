@@ -74,7 +74,7 @@ func main() {
 	}{1}
 
 	v2  := struct {
-		X int `json: "foo"`
+		X int `json: "foo"` 
 	}{2}
 
 	v1 = v2
@@ -89,6 +89,7 @@ func main() {
 
 	_ = json.Unmarshal(j, &r2)
 	fmt.Printf("%#v\n",r)
+
 
 }
 
