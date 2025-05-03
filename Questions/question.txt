@@ -75,3 +75,96 @@ What potential problem can arise here, and how would you fix it?
 
 ---
 
+
+**Concurrency in Go - Chapter 3: Concurrency Building Blocks**
+
+---
+
+
+
+
+### Section A: Descriptive Questions and Answers
+
+1. **Explain the concept of a goroutine in Go. How does it differ from a traditional operating system thread?**
+
+   * Goroutines are lightweight, independently executing functions managed by the Go runtime. Unlike traditional threads, they consume fewer resources, are multiplexed onto fewer OS threads, and start with a smaller stack size that grows dynamically.
+
+2. **Describe how channels work in Go and provide an example of a simple communication between two goroutines.**
+
+   * Channels are typed conduits through which goroutines communicate. Example:
+
+     ```go
+     ch := make(chan int)
+     go func() {
+         ch <- 42
+     }()
+     fmt.Println(<-ch)
+     ```
+
+3. **What is the significance of the `select` statement in Go? How does it simplify concurrent operations?**
+
+   * The `select` statement allows a goroutine to wait on multiple communication operations. It blocks until one of its cases can proceed, helping coordinate activities across channels and reducing the need for locks.
+
+4. **Differentiate between buffered and unbuffered channels with examples.**
+
+   * Buffered channels have a capacity and allow sending without immediate receivers up to the limit:
+
+     ```go
+     ch := make(chan int, 2)
+     ch <- 1
+     ch <- 2
+     ```
+
+     * Unbuffered channels require a receiver to be ready before sending proceeds.
+
+5. **Discuss the importance of closing channels. What are the potential issues if channels are closed improperly?**
+
+   * Closing a channel indicates no more values will be sent. Improperly closing a channel (e.g., closing it multiple times or while still in use) can cause runtime panics or bugs.
+
+6. **Explain how Go’s concurrency model helps in building modular and testable programs.**
+
+   * Go’s concurrency primitives promote modularity by encouraging isolated components communicating over channels, making them easier to reason about and test independently.
+
+7. **Describe how to implement a fan-out/fan-in pattern using goroutines and channels.**
+
+   * Multiple goroutines read from a shared input channel (fan-out), process data, and write results to a single output channel (fan-in), increasing parallelism and throughput.
+
+8. **What are the benefits and risks associated with launching a large number of goroutines?**
+
+   * Benefits include efficient concurrency and resource use. Risks include memory exhaustion, race conditions, or deadlocks if not managed properly.
+
+---
+
+### Section B: Short Answer Questions and Answers
+
+9. **What keyword is used to start a new goroutine in Go?**
+
+   * `go`
+
+10. **What happens if a goroutine attempts to send on a channel that no other goroutine is receiving from?**
+
+* It blocks indefinitely, potentially causing a deadlock.
+
+11. **What does a `select` statement do when multiple case conditions are ready?**
+
+* One is chosen randomly for execution.
+
+12. **Name one way to signal cancellation or completion across goroutines.**
+
+* Using a done channel (e.g., `close(done)`) or `context.Context`.
+
+13. **How can an unbuffered channel cause a deadlock?**
+
+* If there is no receiver, send operations block forever, causing a deadlock.
+
+14. **What is the zero value of a channel variable in Go?**
+
+* `nil`, which blocks forever on send and receive.
+
+15. **Is it safe to read from a closed channel? What does it return?**
+
+* Yes. It returns the zero value of the type and `false` if using the comma-ok form.
+
+  ```go
+  val, ok := <-ch
+  ```
