@@ -1,7 +1,9 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
+
+	
 )
 
 // Ad hoc confinement ensures safe access to shared data by confining it to a single goroutine.
@@ -44,5 +46,29 @@ func main() {
     // Receive and print data from the channel
     for num := range handleData1 {
         fmt.Println(num)
+    }
+
+    // for-select loop: This is a common pattern for handling multiple channels.
+
+
+    // Sending iteration var out on the channel
+
+    done := make(chan struct{}) // Create a done channel to signal completion
+    stringStream := make(chan string) // Create a channel for strings
+    for _, s := range []string{"a", "b", "c"} {
+        select {
+        case <- done:
+            return 
+            case stringStream <- s:
+      }
+    }
+
+    // Looping infinitely until the done channel is closed
+    for {
+        select{
+            case<-done:
+                return
+            default:
+        }
     }
 }
