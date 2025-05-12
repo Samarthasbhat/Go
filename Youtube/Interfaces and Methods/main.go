@@ -7,11 +7,20 @@ package main
 
 import (
 	"fmt"
+	"math"
 )
 
 type errFoo struct {
 	err error
 	path string
+}
+
+type Point struct {
+	x, y float64
+}
+
+func (p Point) Distance(q Point) float64 {
+	return math.Hypot(q.x-p.x, q.y-p.y)
 }
 
 func (e errFoo) Error() string{
@@ -39,9 +48,23 @@ func XYZ(a int) *errFoo{
 
 	result := add5(5) // result is 15
 	fmt.Println(result) // Output: 15
+
+
+	p := Point{1,2}
+	q := Point{4,6}
+
+	fmt.Println(p.Distance(q)) // Output: 5
+
+	distanceFromP := p.Distance
+	fmt.Printf("%T\n", distanceFromP) // Output: func(*main.Point, main.Point) float64
+	fmt.Printf("%T\n", Point.Distance) // Output: *func(*main.Point, main.Point) float64
+
+	fmt.Println(distanceFromP(q))
 }
 
 // Pointer vs value receiver
+
+// A method value with a value receiver copies the receiver
 
 // Curried function
 
