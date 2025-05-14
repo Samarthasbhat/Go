@@ -96,6 +96,36 @@ func (db database) drop(w http.ResponseWriter, req *http.Request){
 }
 
 
+func (db database) rename(w http.ResponseWriter, req *http.Request){
+	oldName := req.URL.Query().Get("old")
+	newName := req.URL.Query().Get("new")
+	price := req.URL.Query().Get("price")
+
+
+	if _, ok := db[oldName]; !ok {
+		msg := fmt.Sprintf("no such item: %q", oldName)
+		http.Error(w, msg, http.StatusNotFound) //404
+		return
+	}
+
+	if _, exists := db[newName]; exists {
+		http.Error(w, fmt.Sprintf("item %q already exists", newName), http.StatusBadRequest)
+		return
+	}
+
+	p, err := strconv.ParseFloat(price, 32)
+
+		if err != nil {
+		http.Error(w, fmt.Sprintf("invalid price: %q", price), http.StatusBadRequest)
+		return
+	}
+	db[newName] = dollars(p)
+	delete(db, oldName)
+
+	fmt.Fprintf(w, "renamed its %q to %q with price %s\n", oldName, newName, db[newName])
+	
+}
+
 func main() {
 	db := database {
 		"shoes": 50,
@@ -107,7 +137,7 @@ func main() {
 	http.HandleFunc("/update", db.update)
 	http.HandleFunc("/delete", db.drop)
 	http.HandleFunc("/read", db.fetch)
-	
+	http.HandleFunc("/rename", db.rename)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
